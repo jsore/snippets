@@ -9,17 +9,26 @@
 =            helper global selectors            =
 ===============================================*/
 
+/*----------  CSS selectors  ----------*/
+
 /**
- * selects elements with CSS selectors ( fuzzy-ish )
- * so, specify if selector is class [.] or ID [#]
+ * must specify class [.] or ID [#]
  */
 let elm = document.querySelector.bind(document);
 let elms = document.querySelectorAll.bind(document);
 
+
+
+/*----------  HTML ID selectors  ----------*/
+
 /**
- * always assumes selector is an ID [#] ( specific-ish )
+ * always assumes selector is an ID [#]
  */
 let id = (id) => { return document.getElementById( id ); };
+
+
+
+/*----------  href ( URL ) helpers  ----------*/
 
 /**
  * returns current page's href ( the URL )
@@ -44,7 +53,7 @@ let query = window.location.search;
 /**
  * loads a new document ( page )
  */
-const newDoc = () => { window.location.asign('https://anotherSite.com') };
+const newDoc = () => { window.location.assign('https://anotherSite.com') };
 // <body>
 //   ...
 //   <input type="button" value="Redirect Me" onclick="newDoc()">
@@ -55,16 +64,6 @@ const newDoc = () => { window.location.asign('https://anotherSite.com') };
 /*======================================
 =            devtools hacks            =
 ======================================*/
-
-// just a <p> with properties for snippets in this section
-// <p onClick="makeGreen()">×BREAK×DOWN×</p>
-const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
-function colorMe() {
-    const p = document.querySelector('p');
-    p.style.color = '#BADA55';
-    p.style.fontSize = '50px';
-}
-
 
 /*----------  console string substitutions  ----------*/
 
@@ -79,7 +78,19 @@ function colorMe() {
  */
 
 
-/*----------  view DOM elements  ----------*/
+/*----------  demo <p>  ----------*/
+
+    // <p onClick="colorMe()">×BREAK×DOWN×</p>
+    // function colorMe() {
+    //     const p = document.querySelector('p');
+    //     p.style.color = '#BADA55';
+    //     p.style.fontSize = '50px';
+    // }
+    
+    
+
+
+/*----------  direct DOM access  ----------*/
 
     console.dir(p);
     // ▶ <p onclick="makeGreen()" style="color: rgb(186, 218, 85); font-size: 50px;">
@@ -116,6 +127,11 @@ function colorMe() {
 
 /*----------  grouping logs  ----------*/
 
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    /**
+     * manual segregation
+     */
     dogs.forEach(dog => {
         console.groupCollapsed(`${dog.name}`);
         console.log(`This is ${dog.name}`);
@@ -132,13 +148,16 @@ function colorMe() {
     //    hugo is 8 years old
     //    hugo is 56 dog years old
 
-
+    /**
+     * auto format
+     */
+    console.table(dogs);
 
 /*=================================================
 =            reminders of fundamentals            =
 =================================================*/
 
-/*----------  timing with Promises  ----------*/
+/*----------  fetch() Promises  ----------*/
 
     console.time('fetching data');
     fetch('https://api.github.com/users/wesbos')
@@ -147,16 +166,15 @@ function colorMe() {
             console.timeEnd('fetching data');
             console.log(data);
         });
-    console.table(dogs);
 
 
 /*----------  arrays & objects: reference vs copying  ----------*/
 /**
- * Array.slice() without arguments to copy an entire array
- * Array.concat() for copying arrays
- * Array.from() for copying arrays into an existing array
- * ES6 spread
- * Object.assign() for copying Objects
+ * - Array.slice()
+ * - Array.concat()
+ * - Array.from()
+ * - ...spread
+ * - Object.assign()
  */
 
     /**
@@ -167,55 +185,76 @@ function colorMe() {
     console.log(players);  // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "Poppy" ]
     console.log(teamOne);  // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "Poppy" ]
 
-    /** try to manipulate the copy... */
+    /**
+     * try to manipulate the copy...
+     */
     teamOne[3] = 'Lux';
 
-    /** ...oops, we made a REFERENCE, not a copy of the 1st array: */
+    /**
+     * ...oops, we made a REFERENCE, not a copy of the 1st array:
+     */
     console.log(teamOne);  // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "Lux" ]
     console.log(players);  // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "Lux" ]
 
     /**
-     * both arrays are REFERNCES to the same data
-     *
-     * to make a fresh COPY and have two datasets:
+     * both arrays are REFERNCES to the same data, to make a
+     * fresh copy instead:
      */
 
-    /** 1 - create a new array out of .slice'ed array */
+    /**
+     * copy all indexes of an array by providing calling
+     * slice() with no parameters
+     */
     const teamCpy1 = players.slice();
 
-    /** 2 - instantiate a new array and concat() from an existing array into it */
+    /**
+     * manually create a new array then copy all indexes of
+     * an existing array into it
+     */
     const teamCpy2 = [].concat(players);
 
-    /** 3 - use spread syntax to copy every index of an existing array into a new array */
+    /**
+     * '...spread' all indexes of a given array into a new one
+     */
     const teamCpy3 = [...players];
 
-    /** 4 - basically concat() but without having to manually build a new array */
+    /**
+     * specify you want a new array and put all indexes of
+     * another array into it
+     */
     const teamCpy4 = Array.from(players);
 
-    /** now we can change one array without altering the other */
+    /**
+     * now we can change one array without altering the other
+     */
     teamCpy3[3] = 'A New Name';
     console.log(players);   // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "Poppy" ]
     console.log(teamFour);  // ▶ Array(4) [ "Wes", "Sarah", "Ryan", "A New Name" ]
 
     /**
-     * make an object and, like our arrays, fail to copy it
+     * objects adhere to the same principles:
      */
     const person = {
         name: 'Justin Sorensen',
         age: 26
     };
-    const captain = person;
-    captain.number = 99;
-    console.log(person);   // ▶ Object { name: "Justin Sorensen", age: 26, number: 99 }
-    console.log(captain);  // ▶ Object { name: "Justin Sorensen", age: 26, number: 99 }
+    const captain = person;  // this is a REFERENCE to the same data, not a copy
+    captain.number = 99;     // attempt to change property on new array
+    console.log(person);     // ▶ Object { name: "Justin Sorensen", age: 26, number: 99 }
+    console.log(captain);    // ▶ Object { name: "Justin Sorensen", age: 26, number: 99 }
 
     /**
-     * assign({<the new object>}, <object to copy>, { <new or updated properties> });
+     * assign([0])  the new object, leave blank for 'self'
+     * assign([1])  the object to copy
+     * assign([2])  object containing new or updated properties
      */
     const captain2 = Object.assign({}, person, { number: 99, age: 12 });
     console.log(captain2);  // ▶ Object { name: "Justin Sorensen", age: 12, number: 99 }
 
-    /** more examples */
+    /**
+     * copy object without changes to properties, copying
+     * an object that's been stringify'ed then parsed
+     */
     const justin = {
         name: 'Justin',
         age: 36,
@@ -224,18 +263,16 @@ function colorMe() {
             facebook: 'jsore.developer'
         }
     };
-    /** no changes to properties while copying */
     const justin2 = Object.assign({}, justin);
-    /** from JSON */
     const justinJSON = JSON.parse(JSON.stringify(justin));
 
 
 
 /*----------  arrays: item removal  ----------*/
 /**
- * Array.find()
- * Array.slice() with arguments
- * ES6 spread
+ * - Array.find()
+ * - Array.slice() with arguments
+ * - ES6 spread
  */
 
     /**
