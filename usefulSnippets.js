@@ -5,6 +5,76 @@
  * some time in the future maybe
  */
 
+/*===========================
+=            CSS            =
+===========================*/
+
+/*----------  CSS Selectors  ----------*/
+
+    /**
+     * <class> selector
+     */
+    #element
+    /**
+     * <id> selector
+     */
+    .element
+
+    /**
+     * descendant selectors are expensive...
+     */
+    #nav a { ... }  // slow
+    /**
+     * ...add a specific ID inside every <a> instead:
+     */
+    .nav-link { ... }  // fast
+
+    /**
+     * CSS reads right to left:
+     * 1. match every <a> on the page
+     * 2. find every <a> that's inside a <li>
+     * 3. use only <li>'s that are inside a <ul>
+     * 4. filter the current selection to elms with a class of .container
+     *
+     * the more specific the rightmost selector is the better (faster):
+     */
+    .container ul li a { ... }  // slow
+    .container-link-style { ... }  // faster, use for all <a>'s to style
+
+    /**
+     * order matters, example CSS + HTML:
+     */
+    .red { color: red; }
+    .blue { color: blue; }
+    <div class="blue red">HTML doesn't care about order...</div>
+    <div class="red blue">...but CSS does: these will both be blue</div>
+
+
+/*----------  expensive (slow) properties  ----------*/
+
+    elm {
+        border-radius
+        box-shadow
+        filter
+        :nth-child
+        position: fixed
+        /**
+         * or any geometric properties that affect layout:
+         */
+        width
+        height
+        top
+        left
+    }
+
+
+/*----------  useful resources  ----------*/
+
+/*
+    - explains CSS selectors:
+        https://github.com/josh/css-explain
+*/
+
 /*===============================================
 =            helper global selectors            =
 ===============================================*/
