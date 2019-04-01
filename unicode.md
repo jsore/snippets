@@ -67,7 +67,7 @@ regular             bold                highlighted row
 
 - stars/'favorite' indicator
 
-✩ ⭐ ❤ 🖤
+    ✩ ⭐ ❤ 🖤
 
 - speech bubble
 
