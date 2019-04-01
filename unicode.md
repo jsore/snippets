@@ -2,6 +2,7 @@ this might literally make me lose my mind
 
 http://www.fileformat.info/info/unicode/block/box_drawing/images.htm
 
+
 ┌────┐              ┏━━━━┓
 │    │              ┃    ┃
 └────┘              ┗━━━━┛
@@ -15,14 +16,6 @@ http://www.fileformat.info/info/unicode/block/box_drawing/images.htm
 ├────┼────┼────┤    ┣━━━━╋━━━━╋━━━━┫    ├────┼────┤────┤
 │    │    │    │    ┃    ┃    ┃    ┃    │    │    │    │
 └────┴────┴────┘    ┗━━━━┻━━━━┻━━━━┛    └────┴────┴────┘
-
-┌────┬────┬────┐
-│    │    │    │
-├────╆━━━━╅────┤
-│    ┃    ┃    │
-├────╄━━━━╃────┤
-│    │    │    │
-└────┴────┴────┘
 
 
 
