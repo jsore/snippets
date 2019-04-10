@@ -41,6 +41,10 @@ regular             bold                highlighted row
 
     ❗
 
+- shortener
+
+    …
+
 - copyright
 
     ©
