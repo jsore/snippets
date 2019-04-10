@@ -85,11 +85,13 @@ A 'best guess': IBM needs to eat RedHat aquisition cost (34b), they'll be placed
     - IBM judges each person the same way for every person in company
     - not looking at how much it costs to keep the person, they're looking at average costs for a person across a country
 
+<br>
 
 - Does this decision affect all departments under your umbrella?
 
     - yes, any attrition in any department, a review is had to determine validity of keeping role in the US
 
+<br>
 
 - is there a final decision of which 3 countries to concentrate staffing efforts?
 
@@ -101,4 +103,7 @@ A 'best guess': IBM needs to eat RedHat aquisition cost (34b), they'll be placed
     - SOC replacements are being deployed across all 3 countries already scoped
 
 
-any further questions: go to Jason, Jake but Allen is available via slack, email, will be answered in a public forum
+<br>
+
+
+Any further questions: go to Jason, Jake but Allen is available via slack, email, will be answered in a public forum
