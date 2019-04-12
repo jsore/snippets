@@ -156,8 +156,6 @@ const newDoc = () => { window.location.assign('https://anotherSite.com') };
     //     p.style.color = '#BADA55';
     //     p.style.fontSize = '50px';
     // }
-    
-    
 
 
 /*----------  direct DOM access  ----------*/
@@ -373,13 +371,172 @@ const newDoc = () => { window.location.assign('https://anotherSite.com') };
 
 
 
+/*===================================================
+=            async > vanilla JS Promises            =
+===================================================*/
+/**
+ * Promises resolve to the value returned by async function
+ *
+ * async functions are Promise-based but synchronous and
+ * don't block the main thread
+ *
+ * await function x() SUSPENDS EXECUTION of current function
+ *
+ * Promise.then(x) continues execution of the current
+ * function after adding x to callback chain
+ *
+ * async functions always return a promise regardless of if
+ * an await is used or not, resolved to whatever the async
+ * function returns (or reject message)
+ */
+
+    /*----------  fundamentals  ----------*/
+    /**
+     * async keyword means the function returns a Promise
+     */
+    async function asyncFunction() {
+        try {
+            // an await'ed function that might fail...
+
+        } catch (e) {
+            // error from rejected Promise returned from try block
+        }
+
+        // explicityly return a Promise
+        return Promise.resolve('something');
+        // or if returning a non-Promise value, JS wraps it into a resolved Promise
+        return ('something');
+    }
 
 
+    /**
+     * JS waits until Promise settles then you can do
+     * stuff with the result, engine will continue with
+     * other tasks (scripts, events, etc) while waiting
+     */
+    let promise = new Promise((resolve, reject) => {
+        setTimeout(() => resolve('something'), 2000)  // resolves in 2 secs
+    });
+    let result = await promise;  // paush until Promise resolves
+    alert(result);  // "something"
 
 
+    /**
+     * async allows for a more readable replacement of
+     * Promise .then() chains
+     */
+    async function getAPIData(url) {
+        let payload;
+        try {
+            const v = await contentData(url);  // returns a Promise
+            payload = await anotherThing(v);  // returns a Promise
+        } catch (e) {
+            v = await somethingElse(url);  // returns a Promise
+        }
+        // this is the resolution of a Promise
+        return payload;  // it gets wrapped into a Promise
+    }
 
 
+    /**
+     * async/await is more performant for how it manages
+     * stack traces (drops the trace) vs how Promises handle
+     * them (stores it, requiring more memory and time) to
+     * track function contexts when calling callbacks
+     */
+    const foo = async () => {
+        // boo() is a pointer to foo(), storing the pointer is more performant than
+        // saving the entire stack tracke
+        // foo() is suspended while boo() executes, saving foo()'s context
+        await boo();  // returns a promise
+        doe();
+    };
 
+
+    /*----------  async with streams  ----------*/
+    /**
+     * example of psuedo asynchronous loop with streams
+     */
+    async function getResponseSize(url) {
+        const response = await fetch(url);
+        const reader = response.body.getReader();
+        let result = await reader.read();
+        let total = 0;
+
+        while (!result.done) {
+            const value = result.value;
+            total += value.length;
+            console.log('Received chunk', value);
+            // get the next result
+            result = await reader.read();
+        }
+        return total;
+    }
+    getResponseSize('https://some-api.com/gimme-dat-booty');
+
+
+    /*----------  async in arrow functions  ----------*/
+
+    // maps URLs to json-promises
+    const jsonPromises = urls.map(async url => {
+        /**
+         * .map() doesn't care it was given an async function,
+         * it just sees a function that returns a promise, it
+         * won't wait for the 1st function to complete before
+         * calling the next
+         */
+        const response = await fetch(url);
+        return response.json();
+    });
+    // urls = ['https://…', 'https://…', 'https://…', …];
+
+
+    /*----------  async in object methods  ----------*/
+
+    const storage = {
+        async getAvatar(name) {
+            const cache = await caches.open('avatars');
+            return cache.match(`/avatars/${name}.jpg`);
+        }
+    };
+    storage.getAvatar('username').then(…);
+
+
+    /*----------  *** parallel examples ***  ----------*/
+
+    // will take 1000ms
+    async function series() {
+        await wait(500);    // wait 500ms...
+        await wait(500);    // ...then another 500ms
+        return 'done';      // 1000ms after call
+    }
+
+    /* versus */
+
+    // will take 500ms
+    async function parallel() {
+        const wait1 = wait(500);  // one 500ms timer...
+        const wait2 = wait(500);  // ...another
+        await wait1;  // these get started at the same time...
+        await wait2;  // ...so this completes right after the 1st one
+        return 'done';
+    }
+
+    /**
+     * example that's not overly sequential and simple, fetch
+     * a series of URLs and log them ASAP in correct order
+     */
+    async function logInOrder(urls) {
+        // fetch all urls in parallel
+        const textPromises = urls.map(async url => {
+            const response = await fetch(url);
+            return response.text();
+        });
+        // log them in sequence
+        for (const textPromise of textPromises) {
+            console.log(await textPromise);
+        }
+    }
 
 
 
