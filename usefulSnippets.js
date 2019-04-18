@@ -5,6 +5,14 @@
  * some time in the future maybe
  */
 
+
+// go home
+$ cd
+// go to directory you were just in
+$ cd -
+
+
+
 /*===========================
 =            CSS            =
 ===========================*/
