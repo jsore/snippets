@@ -1,4 +1,16 @@
-## Because I like documentation and good formatting
+## Because I like documentation and good formatting...
+
+...and reasons
+
+
+<br>
+
+ಠ_ಠ
+
+https://stackoverflow.com/questions/7451524/why-arent-%DC%AB-and-valid-javascript-variable-names/7451569#7451569
+
+<br>
+
 
 - Tables
 
